@@ -1,0 +1,27 @@
+<div class="container">
+  <br>
+  <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3>Login To Portal</h3>
+    </div>
+    <div class="panel-body">
+
+      <h3>{{errorMsg}}</h3>
+
+      <form form #register="ngForm" (ngSubmit)="onSubmit(register.value)">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+          <input type="email" class="form-control" name="email" placeholder="name@example.com" ngModel required>
+        </div>
+        <br>
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+          <input type="password" class="form-control" name="password" placeholder="Password" ngModel required>
+        </div>
+        <br>
+        <button type="button" class="btn btn-primary" type="submit">Login</button>
+        <a href="/register-user"> Register</a>
+      </form>
+    </div>
+  </div>
+</div>

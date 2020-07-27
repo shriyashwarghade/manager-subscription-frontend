@@ -1,0 +1,242 @@
+<div *ngIf="loadingComplted ;else loading">
+  <div class="container">
+    <br>
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h3>{{heading}}</h3>
+
+      </div>
+      <div class="panel-body">
+        <br>
+        <div align="right"><button type="button" class="btn btn-success" (click)="logoutUser()">Logout</button></div>
+
+        <br>
+        <br>
+        <table class="table">
+          <tbody>
+            <tr>
+              <td>First Name</td>
+              <td>{{userData.first_name}}</td>
+            </tr>
+            <tr>
+              <td>Last Name</td>
+              <td>{{userData.last_name}}</td>
+            </tr>
+            <tr>
+              <td>Date Of Birth</td>
+              <td>{{userData.dob}}</td>
+            </tr>
+            <tr>
+              <td>Name Of Company</td>
+              <td>{{userData.company}}</td>
+            </tr>
+
+          </tbody>
+        </table>
+
+        <br>
+        <br>
+        <div>
+          <h1>Subscription Packs</h1>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <td><b>Name</b></td>
+              <td><b>Amount</b></td>
+              <td><b>Subscription</b></td>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let item of products">
+              <td>{{item.nickname}}</td>
+              <td>
+                {{[item.unit_amount_decimal.slice(0, item.unit_amount_decimal.length-2), '.', item.unit_amount_decimal.slice(item.unit_amount_decimal.length-2,item.unit_amount_decimal.length)].join('')}}
+              </td>
+              <td>
+                <button *ngIf="item.id !== userData.product_id" type="button" class="btn btn-primary"
+                  data-toggle="modal" data-target="#createSubscription" (click)="onSubscribeClick(item)">
+                  Subscribe
+                </button>
+                <button *ngIf="item.id == userData.product_id" type="button" class="btn btn-danger" data-toggle="modal"
+                  data-target="#cancelSubscription">
+                  Cancel Subscription
+                </button>
+
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+        <br>
+        <br>
+        <div>
+          <h1>Subscription History</h1>
+        </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <td><b>ID</b></td>
+              <td><b>Name</b></td>
+              <td><b>Status</b></td>
+              <td><b>Purchased On</b></td>
+              <td><b>Ended On</b></td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of subscriptionData">
+              <td>{{item.subscription_id}}</td>
+              <td>{{item.subscription_name}}</td>
+              <td>{{item.subscription_status}}</td>
+              <td>{{item.subscription_purchase_on}}</td>
+              <td>{{item.subscription_ended_on}}</td>
+            </tr>
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class=" modal fade" id="createSubscription" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div *ngIf="onSubcribeErrorMsg =='';else showErrorMsg">
+    <form form #register="ngForm" (ngSubmit)="confirmPurchase(register.value)">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title" id="exampleModalLabel">{{newService.nickname}}</h1>
+          </div>
+          <div class="modal-body">
+            <div class="card-block">
+
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="form-group">
+                    <label>CARD NUMBER</label>
+                    <div class="input-group">
+                      <input type="tel" class="form-control" placeholder="Valid Card Number" name="cardNumber"
+                        ngModel />
+                      <span class="input-group-addon"><span class="fa fa-credit-card"></span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-7 col-md-7">
+                  <div class="form-group">
+                    <label><span class="hidden-xs">EXPIRATION</span><span class="visible-xs-inline">EXP</span>
+                      DATE</label>
+                    <br>
+                    <select name='expireMM' name='expireMM' ngModel>
+
+                      <option value='01' selected>January</option>
+                      <option value='02'>February</option>
+                      <option value='03'>March</option>
+                      <option value='04'>April</option>
+                      <option value='05'>May</option>
+                      <option value='06'>June</option>
+                      <option value='07'>July</option>
+                      <option value='08'>August</option>
+                      <option value='09'>September</option>
+                      <option value='10'>October</option>
+                      <option value='11'>November</option>
+                      <option value='12'>December</option>
+                    </select>
+                    <select name='expireYY' name='expireYY' ngModel>
+                      <option value='20' selected>2020</option>
+                      <option value='21'>2021</option>
+                      <option value='22'>2022</option>
+                      <option value='23'>2023</option>
+                      <option value='24'>2024</option>
+                      <option value='25'>2025</option>
+                      <option value='26'>2026</option>
+                      <option value='27'>2027</option>
+                      <option value='28'>2028</option>
+                      <option value='29'>2029</option>
+                      <option value='30'>2030</option>
+                      <option value='12'>2012</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-xs-5 col-md-5 float-xs-right">
+                  <div class="form-group">
+                    <label>CVV CODE</label>
+                    <input type="tel" class="form-control" placeholder="CVV" name="cvv" ngModel />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <div class="form-group">
+                    <label>CARD OWNER</label>
+                    <input type="text" class="form-control" placeholder="Card Owner Names" ngModel />
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <h4>{{errorInPurchase}}</h4>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" type="submit">Make Payment Of
+              {{[newService.unit_amount_decimal.slice(0, newService.unit_amount_decimal.length-2), '.', newService.unit_amount_decimal.slice(newService.unit_amount_decimal.length-2,newService.unit_amount_decimal.length)].join('')}}</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<ng-template #showErrorMsg>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">{{newService.name}}</h3>
+
+      </div>
+      <div class="modal-body">
+        {{onSubcribeErrorMsg}}
+      </div>
+      <div class="modal-footer">
+        <h4>{{errorInDelete}}</h4>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<div class="modal fade" id="cancelSubscription" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Cancel Subscription</h3>
+      </div>
+      <div class="modal-body">Are you sure you want to cancel subscription? </div>
+      <div class="modal-footer">
+        <h3>{{errorInDelete}}</h3>
+        <button type="button" class="btn btn-success" data-dismiss="modal">No</button>
+        <button type="button" class="btn btn-danger" (click)="onCancelClick()">Yes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #loading>
+  <div><img style="position:absolute;
+top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    margin:auto;
+    " src="https://i.pinimg.com/originals/75/9c/22/759c22458ddb79bddc794bee5c18bb9f.gif">
+  </div>
+</ng-template>
