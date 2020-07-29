@@ -13,14 +13,8 @@ export class HomepageComponent implements OnInit {
   onSubcribeErrorMsg = '';
   errorInPurchase = '';
   errorInDelete = '';
-  newService = {};
-  userData = {
-    first_name: '',
-    last_name: '',
-    dob: '',
-    company: '',
-
-  };
+  newService :any;
+  userData :any;
   subscriptionData = [];
   products = [];
   constructor(
@@ -38,7 +32,7 @@ export class HomepageComponent implements OnInit {
         this.heading = 'Hello ' + this.userData.first_name;
       }
       else {
-        this.http.get('api/user-info', { headers: { Authorization: localStorage.getItem('data-auth-key') } }).subscribe(res => {
+        this.http.get('api/user-info', { headers: { Authorization: localStorage.getItem('data-auth-key') } }).subscribe((res:any) => {
           this.userData = res.user;
           localStorage.setItem('data-user', JSON.stringify(res.user));
           this.heading = 'Hello ' + this.userData.first_name;
@@ -53,7 +47,7 @@ export class HomepageComponent implements OnInit {
         this.subscriptionData = JSON.parse(localStorage.getItem('data-user-subscription'));
       }
       else {
-        this.http.get('api/subscription', { headers: { Authorization: localStorage.getItem('data-auth-key') } }).subscribe(res => {
+        this.http.get('api/subscription', { headers: { Authorization: localStorage.getItem('data-auth-key') } }).subscribe((res:any) => {
           localStorage.setItem('data-user-subscription', JSON.stringify(res.subscription));
           this.subscriptionData = res.subscription;
 
@@ -72,7 +66,7 @@ export class HomepageComponent implements OnInit {
   }
 
   loadProductsList() {
-    this.http.get('api/products', { headers: { Authorization: localStorage.getItem('data-auth-key') } }).subscribe(res => {
+    this.http.get('api/products', { headers: { Authorization: localStorage.getItem('data-auth-key') } }).subscribe((res:any) => {
       this.products = res.msg;
       this.loadingComplted = true;
     }, error => {

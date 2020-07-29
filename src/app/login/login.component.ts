@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     }
     else {
       this.errorMsg = 'Please Wait Login You Into The Portal....'
-      this.http.post('api/login-request', { email_id: data.email, password: data.password }).subscribe(res => {
+      this.http.post('api/login-request', { email_id: data.email, password: data.password }).subscribe((res:any) => {
         this.errorMsg = '';
         localStorage.removeItem('data-user');
         localStorage.removeItem('data-user-subscription');

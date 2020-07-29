@@ -5,11 +5,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
-  {
-    path: '',
-    pathMatch: "prefix",
-    redirectTo: 'index'
-  },
+
   {
     path: 'login',
     component: LoginComponent
@@ -21,7 +17,12 @@ const routes: Routes = [
   {
     path: 'index',
     component: HomepageComponent
-  }
+  },
+  {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'index'
+  },
 ];
 
 @NgModule({
